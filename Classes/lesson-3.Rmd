@@ -1,0 +1,66 @@
+---
+title: "Class 3 Notes and Exercises"
+author: ZN
+date: "Date created: `r Sys.Date()`"
+output: html_notebook
+---
+#*Learning Objectives*
+1. Host your notebook online using github
+2. Filter rows from tabular data
+3. Mutate tabular data
+4. Master grouping
+5. Introduce ggplot2 for data visualizations
+
+```{r}
+library(nycflights13); library(tidyverse)
+```
+#Class 3 Tasks
+##Filter rows (Task time 15 mins)
+1. Select the first three columns (year, month, day), all other columns whose names `contains()` the term "delay" and the origin column. Filter this data to show all the flights that took off in the morning (before 12:00) from JFK in December. Make sure to use pipes between the select and filter command. Refer to the shortcut for inserting a pipe (see above).
+```{r}
+flights %>%
+  select(1, 2, 3, 5, contains("dep"), origin) %>% 
+  filter(dep_time <1200 & origin == "JFK" & month == 12)
+```
+
+2. Use `top_n()` to print the most delayed departures from NYC in 2013. Read the documentation for `top_n()` on tidyverse if you are confused.
+```{r}
+flights %>% 
+  top_n(., n = 1, dep_delay) # n is 1 is giving you just 1 top, if you wanted top 5 you'd give n equals 5
+```
+
+3. Run the code below, read the error and fix the code so that it works
+```{r}
+flights %>% 
+    filter(month == 6 & day > 15) # Needs double equal fixed below
+```
+#fixing the prob above
+```{r}
+flights %>% 
+   filter(month == 6 & day > 15)
+```
+
+5. Filter the flights that were between the 10th and 40th most delayed in terms of arrival (`arr_delay`) using the `dense_rank()` helper function.
+```{r}
+
+```
+
+```{r}
+flights %>%
+   filter(dense_rank(desc(arr_delay)) %in% 10:40)
+```
+
+
+##Mutate a tibble (Task time 10 mins)
+1. Create a variable that indicates whether a flight took off in the AM or the PM.
+```{r}
+flights %>% 
+  select (1:6) %>% 
+  mutate (AMPM = if_else(dep_time > 1200, "PM", "AM"))
+```
+2. Use `transmute()` instead of `mutate()` to do the same. What is the difference between the two?
+```{r}
+flights %>%
+  select (1:6) %>% 
+  transmute (AMPM = if_else(dep_time > 1200, "PM", "AM"))
+  ```

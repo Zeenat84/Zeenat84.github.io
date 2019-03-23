@@ -1,0 +1,39 @@
+---
+title: "Class 1 Exercises"
+output: html_notebook
+---
+
+# My first exercise
+
+1. Create the folder structure for the class on your computer called "yourfirstnameR4D" with the following subfolders in it - "Assignments", "Classes" and "Data". This will be your folder for the entire course.
+2. Create an R notebook change its YAML title to "Class 1 Exercises"
+3. Create a level 2 header called "My first exercise"
+4. Create your first code chunk (remember to use the shortcuts)
+5. Within it assign any value you would like to a variable. Print this value. Save the file in the "Classes" subfolder
+6. Preview the notebook.
+7. Use this notebook to take in class notes, try out things and complete in class tasks.
+```{r}
+classFirstVar <- "Rad"
+classFirstVar
+```
+# My Second Exercise
+1. Create and store a character vector (of your choice), a numeric vector (interger/double), all of the same length
+2. Use `seq()` to generate an atomic vector containing all the odd numbers less than 100
+3. Store all the vectors created in step 1 in a named list
+4. Create a dataframe using all the vectors stored in step 1
+5. Predict the output of the following without running the code in `c("FALSE", FALSE)`, `c(1.0, FALSE)`, `c(2, TRUE)` and `c("two", 2)`
+6. What get returned when you check the `typeof()` the dataframe created in step 4. Why?
+
+```{r}
+IceCreamFlavors <- c("Vanilla", "Chocolate", "Mango")
+IceCreamFlavors
+Price <- c(5, 7, 6)
+Price
+oddnumseq <- seq(from = 1, to = 99, by = 2)
+oddnumseq
+vars <- list(IceCreamFlavors, Price)
+vars
+Icecream <- data.frame(Flavor = IceCreamFlavors, Price = Price)
+data.frame
+```
+
