@@ -1,0 +1,127 @@
+---
+title: "Class 12 Notes and Exercises"
+author: ZN
+date: "Date created: `r Sys.Date()`"
+output: html_notebook
+---
+
+**Learning Objective 1:** Understand the concept of vectorization
+
+**Learning Objective 2:** Read and write data from different formats into R
+
+**Topics**
+
+1. Vectorization
+2. Difference between summarising functions and other (say sum vs log)
+3. == vs. %in%
+4. Working directories
+5. Navigation within R
+6. Loading data into R
+7. Writing data into R
+8. Bonus: Working with google drive
+
+##Task set 1
+
+1. Use `paste()` to create a new vector of greetings that appends "Hi" to every odd name and "Hello" to every even name in the following vector of names c("Anders", "Tommy", "Anna", "Liz"). The output of your command should be as follows: `"Hi Anders" "Hello Tommy" "Hi Anna" "Hello Liz"`
+```{r}
+x <- c("Anders", "Tommy", "Anna", "Liz")
+y <- c("Hi", "Hello")
+paste(y, x)
+```
+
+
+2. I am trying to filter out rows from the `flights` data that took off from either EWR or JFK. I have tried out two different versions below. Explain in a few sentences why the first output has lesser number of rows than the second. Which out of the two is the correct method?
+
+```{r}
+library(tidyverse); library(nycflights13)
+
+flights %>% 
+    filter(origin == c("EWR", "JFK"))
+
+# Ans: Because this is using recycling and the next one isn't
+```
+
+```{r}
+flights %>% 
+    filter(origin %in% c("EWR", "JFK"))
+```
+
+3. I am trying to summarise by origin to create a variable that shows the mean of the square of departure delay. Why am I getting the error?
+```{r}
+flights %>% 
+    group_by(origin) %>% 
+    summarise(depDelaySq = dep_delay ^ 2,
+              meanSqDelay = mean(depDelaySq))
+```
+
+4. Correct the code above.
+```{r}
+flights %>% 
+    group_by(origin) %>% 
+    summarise(meanSqDelay = mean(dep_delay ^ 2, na.rm = T))
+     
+```
+
+
+
+##Task Set 2
+1. Go to your desktop and create a folder called "temp_data".
+
+```{r}
+#install.packages("haven")
+```
+
+```{r}
+library(readxl); library(haven); library(tidyverse)
+```
+
+
+2. Store the csv file that I shared with you in this folder.
+
+3. Navigate to the temp_data folder and run `list.files()` to see if the csv file exists in the folder
+```{r}
+list.files("C:\\Users\\geenat\\Desktop\\temp_data")
+```
+
+
+4. Use `read_csv()` to load and assign this to a variable called `csv_data`.
+```{r}
+csv_data <- read_csv(file = "C:\\Users\\geenat\\Desktop\\temp_data\\airlines.csv")
+```
+
+
+5. Go to the folder where this notebook is stored and create a new folder called "data"
+ok
+
+6. Save the .dta and .xlsx file that I shared with you in this folder
+ok
+
+7. Use `read_dta()` to load the .dta file (make sure to assign it to a variable of your choice)
+```{r}
+airlinesDTA <- read_dta("data/airlines.dta")
+#collapse
+```
+
+
+8. Use the `read_excel()` command to load the first sheet of the .xlsx file.
+```{r}
+nycFlightsXL <- read_excel("data/nycFlightsData.xlsx", sheet = "weather")
+```
+
+
+
+#Code snippets sent by Hari
+```{r}
+airlinesCSV <- read_csv(file = "data/airlines.csv")
+
+##list files in a folder
+list.files(pattern = "*.Rmd")
+
+##read an excel file
+nycFlightsXL <- read_excel(path = "../outside data folder/nycFlightsData.xlsx", sheet = "weather")
+
+##load a dta file
+airlinesDTA <- read_dta("data/airlines.dta")
+Collapse
+```
+

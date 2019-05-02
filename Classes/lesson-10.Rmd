@@ -145,3 +145,37 @@ weatheredFlights %>%
 ```
 
 
+
+# Finding out if Flights has a primary key - below is just some trial and error
+```{r}
+flights %>% 
+  group_by(tailnum, origin, time_hour) %>% 
+  #summarise(nobs = n()) %>% #This is just to explore how many obs (count) per group
+  filter(n() > 1)
+```
+
+##Task 4: Explore a multivariate relationship 
+
+```{r}
+weatheredFlights %>% 
+  ggplot(aes(precip)) +
+      geom_histogram(binwidth = 0.01)
+```
+
+
+```{r}
+#Let's explore how precip and temp relate to delay
+weatheredFlights %>% 
+  filter(dep_delay > 0 & !is.na(dep_delay)) %>% 
+  mutate(tempGroup = cut_interval(temp, length = 10, na.rm = T)) %>%
+  #mutate(tempGroup = cut(temp, seq(from = min(temp, na.rm = T), to = max(temp, na.rm = T), 10))) %>% # A more roundabout alternative code
+  #mutate(precipGroup = cut_interval(precip, length = 0.3, na.rm = T)) %>%   
+  group_by(precip, tempGroup) %>% 
+  summarise(meanDelay = mean(dep_delay, na.rm = T)) %>% 
+  ggplot(aes(precip, meanDelay))+
+  geom_point() +
+    geom_smooth(method = "lm") +
+    facet_wrap(~tempGroup, nrow = 5)
+```
+
+

@@ -1,0 +1,7 @@
+---
+title: "Class 14 Notes and Exercises"
+author: ZN
+date: "Date created: `r Sys.Date()`"
+output: html_notebook
+---
+
