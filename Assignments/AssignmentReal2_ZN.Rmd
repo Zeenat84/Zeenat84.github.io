@@ -203,7 +203,9 @@ weatheredFlights %>%
 
 
 +**Question 4: Does the volume of flights on any given day affect delays?**
+Hari - this was a very roundabout way of doing this. Would appreciate thoughts on a simpler solution.
 ```{r}
+# Creating a variable called depDate in order to create another variable containing number of flights per depDate called flightVol. Then summarising to create a mean delay var grouped by depDate. Saving this to a tibble
 depdatemeandel <- weatheredFlights %>% 
   mutate(depDate = paste(year.x, month.x, day.x, sep = "-")) %>% 
   group_by(depDate) %>% 
@@ -212,61 +214,36 @@ depdatemeandel <- weatheredFlights %>%
   summarise(meanDelay = mean(dep_delay, na.rm = T))
 depdatemeandel
 
-  
-```
-```{r}
-flightvol <- weatheredFlights %>% 
+# Creating again just a tibble like above without summarising mean delay. calling it fightvoltibble
+flightvoltibble <- weatheredFlights %>% 
   mutate(depDate = paste(year.x, month.x, day.x, sep = "-")) %>% 
   group_by(depDate) %>% 
-  mutate(flightVol = n()) 
-flightvol
-```
+  mutate(flightVol = n()) %>% 
+  select(depDate, flightVol)
+flightvoltibble
 
-```{r}
+# Finally, joining these 2 tibbles and then extracting only distinct values for each depdate
 newqfourtibble <- depdatemeandel %>% 
-  _join(flightvol, by = c("depDate"))
-newqfourtibble
-```
-
-
-```{r}
-ggplot(aes(flightVol, meanDelay))+
+  left_join(flightvoltibble, by = c("depDate")) %>% 
+  distinct()
+  newqfourtibble
+  
+ # Plotting flightvol against meandelay
+  newqfourtibble %>% 
+    ggplot(aes(flightVol, meanDelay))+
   geom_point() +
     geom_smooth(method = "lm") +
     #facet_wrap(~visibGroup) +
       labs(
     x = "Number of Flights Per Day",
     y = "Average Departure Delay (in minutes)",
-    title = "??"
+    title = "Depature delays are higher on busier days"
     ) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
-```
 
+```
 
 *Question 5: 
-
-
-```{r}
-weatheredFlights
-```
-
-
-------
-1. Next assignment: Explore the causes of departure and arrival delays
-2. Go through the exploratory analysis checklist
-   + Formulate your initial question
-   + Examine your data sources
-       + `str()`, `glimpse()`, `summary()`, `skim()`
-       + Check the top and bottom of your data
-3. Examine the variables of interest for your question
-4. Explore a solution for your question
-   + Use visual comparisons
-   + Illustrate causal frameworks
-   + Use multivariate comparisons
-5. Try and invalidate your solution
-6. Reformulate your question (Rinse and repeat)
-7. Integrate different modes of presenting evidence
-------
 
 
